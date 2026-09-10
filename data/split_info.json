@@ -1,0 +1,18 @@
+{
+  "total_timesteps": 2018,
+  "train_steps": 1412,
+  "val_steps": 303,
+  "test_steps": 303,
+  "train_max_timestamp": 423300,
+  "val_max_timestamp": 514200,
+  "features": [
+    "cpu",
+    "cpu_lag1",
+    "cpu_lag2",
+    "roll_mean_6",
+    "roll_std_6",
+    "hour_sin",
+    "hour_cos"
+  ],
+  "target": "cpu"
+}

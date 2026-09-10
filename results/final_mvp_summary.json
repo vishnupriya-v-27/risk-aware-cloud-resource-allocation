@@ -1,0 +1,195 @@
+{
+  "project": "Google Cluster Trace MVP: Risk-Aware Resource Allocation Framework",
+  "dataset": {
+    "source": "Google Cluster Trace v2",
+    "num_machines": 100,
+    "bins_per_machine": 2018,
+    "total_rows": 201800,
+    "sampling_interval_min": 5,
+    "aggregation": "overlap-weighted CPU usage rate"
+  },
+  "split": {
+    "train_steps": 141200,
+    "validation_steps": 30300,
+    "test_steps": 30300,
+    "split_ratio": "70/15/15 chronological"
+  },
+  "forecasting": {
+    "models": [
+      "Naive Persistence",
+      "Seasonal Naive (24h)",
+      "Global GRU",
+      "Holt-Winters"
+    ],
+    "gru_architecture": {
+      "input_features": 7,
+      "hidden_size": 32,
+      "dropout": 0.2,
+      "output_activation": "Sigmoid"
+    },
+    "fusion_alpha": 0.0,
+    "deployed_forecaster": "Global GRU only (due to alpha*=0.00 on validation)"
+  },
+  "uncertainty_and_calibration": {
+    "signals": {
+      "U1": "|Holt-Winters - GRU| (Model Disagreement)",
+      "U2": "EWMA(gamma=0.2) of past prediction error (Error EWMA)",
+      "U3": "Rolling std over past 6 observations (Workload Volatility)"
+    },
+    "calibration_method": "Method 1: Validation Mean-Error Matching",
+    "validation_mean_error": 0.055305762574953024,
+    "calibration_factors": {
+      "c1": 0.42848922102926934,
+      "c2": 1.0024586273399898,
+      "c3": 0.7751459373380098
+    }
+  },
+  "adaptive_selector": {
+    "metric": "Rolling Spearman rank correlation on historical error window [t-N, t-1]",
+    "optimal_window_N_star": 75,
+    "test_selection_distribution": {
+      "U1_disagreement_pct": 41.68,
+      "U2_error_ewma_pct": 23.23,
+      "U3_volatility_pct": 35.09
+    },
+    "invariance_verified": true
+  },
+  "allocation_and_buffer": {
+    "rule": "A_t = clip(yhat_t + beta * U_cal_star(t), 0.0, 1.0)",
+    "calibrated_beta_star": 3.0,
+    "grace_tolerance_delta": 0.005,
+    "validation_sla_target_achieved": false,
+    "validation_sla_breach_pct": 5.62
+  },
+  "final_benchmark_results": [
+    {
+      "Config": "B0",
+      "Name": "Naive (Persistence)",
+      "Forecast_Model": "y[t-1]",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.0630543616638467,
+      "RMSE": 0.1080263759886258,
+      "SLA_Breach_Pct": 42.74917491749175,
+      "Overshoot_Pct": 53.07920792079208,
+      "Grace_Zone_Pct": 4.1551155115511555,
+      "Over_Provisioning": 0.0320713254618656,
+      "Under_Provisioning": 0.0309830362019811
+    },
+    {
+      "Config": "B0b",
+      "Name": "Seasonal Naive",
+      "Forecast_Model": "y[t-288] (24h)",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.1405331096347224,
+      "RMSE": 0.1882033159522464,
+      "SLA_Breach_Pct": 49.3927392739274,
+      "Overshoot_Pct": 49.11551155115512,
+      "Grace_Zone_Pct": 1.4917491749174918,
+      "Over_Provisioning": 0.0686254718772771,
+      "Under_Provisioning": 0.0719076377574452
+    },
+    {
+      "Config": "B1",
+      "Name": "Global GRU",
+      "Forecast_Model": "GRU (7 feat)",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.0569885946007637,
+      "RMSE": 0.0943194287153097,
+      "SLA_Breach_Pct": 39.86138613861387,
+      "Overshoot_Pct": 56.44554455445544,
+      "Grace_Zone_Pct": 3.693069306930693,
+      "Over_Provisioning": 0.033089330381548,
+      "Under_Provisioning": 0.0238992642192157
+    },
+    {
+      "Config": "B2",
+      "Name": "Holt-Winters",
+      "Forecast_Model": "HW (Tuned m)",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.1619112812275405,
+      "RMSE": 0.2107111197702054,
+      "SLA_Breach_Pct": 49.227722772277225,
+      "Overshoot_Pct": 49.67656765676568,
+      "Grace_Zone_Pct": 1.0825082508250825,
+      "Over_Provisioning": 0.0852907044989159,
+      "Under_Provisioning": 0.0766205767286245
+    },
+    {
+      "Config": "B3",
+      "Name": "GRU + Fixed Mean Buffer",
+      "Forecast_Model": "GRU-based",
+      "Buffer_Type": "Fixed Scalar (0.1659)",
+      "MAE": 0.0569885946007637,
+      "RMSE": 0.0943194287153097,
+      "SLA_Breach_Pct": 2.6765676567656764,
+      "Overshoot_Pct": 97.24422442244224,
+      "Grace_Zone_Pct": 0.0792079207920792,
+      "Over_Provisioning": 0.1778499678145131,
+      "Under_Provisioning": 0.0027428263490752
+    },
+    {
+      "Config": "B4a",
+      "Name": "GRU + U1 Calibrated (Disagreement)",
+      "Forecast_Model": "GRU + HW Sensor",
+      "Buffer_Type": "beta* U1_cal (beta=3.00)",
+      "MAE": 0.0569885946007637,
+      "RMSE": 0.0943194287153097,
+      "SLA_Breach_Pct": 6.844884488448845,
+      "Overshoot_Pct": 92.40594059405942,
+      "Grace_Zone_Pct": 0.7161716171617162,
+      "Over_Provisioning": 0.198135979795018,
+      "Under_Provisioning": 0.0048485602789372
+    },
+    {
+      "Config": "B4b",
+      "Name": "GRU + U2 Calibrated (Error EWMA)",
+      "Forecast_Model": "GRU-based",
+      "Buffer_Type": "beta* U2_cal (beta=3.00)",
+      "MAE": 0.0569885946007637,
+      "RMSE": 0.0943194287153097,
+      "SLA_Breach_Pct": 2.7722772277227725,
+      "Overshoot_Pct": 96.94389438943894,
+      "Grace_Zone_Pct": 0.2508250825082508,
+      "Over_Provisioning": 0.176729147612287,
+      "Under_Provisioning": 0.0030504948799677
+    },
+    {
+      "Config": "B4c",
+      "Name": "GRU + U3 Calibrated (Volatility)",
+      "Forecast_Model": "GRU-based",
+      "Buffer_Type": "beta* U3_cal (beta=3.00)",
+      "MAE": 0.0569885946007637,
+      "RMSE": 0.0943194287153097,
+      "SLA_Breach_Pct": 4.201320132013201,
+      "Overshoot_Pct": 95.29372937293728,
+      "Grace_Zone_Pct": 0.4686468646864687,
+      "Over_Provisioning": 0.1732417714251999,
+      "Under_Provisioning": 0.0038300581314923
+    },
+    {
+      "Config": "P",
+      "Name": "Proposed Adaptive Calibrated",
+      "Forecast_Model": "GRU-based (Adaptive)",
+      "Buffer_Type": "beta* U*_cal (N*=75, beta=3.00)",
+      "MAE": 0.0569885946007637,
+      "RMSE": 0.0943194287153097,
+      "SLA_Breach_Pct": 5.201320132013201,
+      "Overshoot_Pct": 94.25742574257426,
+      "Grace_Zone_Pct": 0.4983498349834983,
+      "Over_Provisioning": 0.1796258606646379,
+      "Under_Provisioning": 0.0042806471689028
+    }
+  ],
+  "major_findings": [
+    "Method 1 validation mean-error matching successfully eliminates the 8-fold scale distortion between raw proxies, reducing over-provisioning waste by 30.2% on the proposed method.",
+    "Spearman selector decisions and optimal window size (N*=75) are 100% mathematically invariant under positive linear scale calibration.",
+    "On the evaluated 100-machine Google Cluster Trace dataset, calibrated U2 (Error EWMA, B4b) strictly dominates the adaptive selector (P) on the Pareto frontier, achieving 2.77% SLA breach at 0.1767 waste compared to 5.20% breach at 0.1796 waste for P.",
+    "The rolling Spearman selector exhibits transition latency (N*=75 steps = 6.25h) that limits its responsiveness during sudden trace bursts compared to smooth exponential smoothing."
+  ],
+  "limitations_and_disclosures": [
+    "Evaluated on a 100-machine subset of Google Cluster Trace v2; broader multi-cloud traces (e.g. Alibaba) remain future work.",
+    "Uncertainty signals are heuristic risk proxies rather than formal Bayesian or conformal prediction intervals.",
+    "Validation SLA target of <= 2.0% breach was not achieved within the candidate beta grid in [0.5, 3.0].",
+    "Because alpha*=0.00, the deployed forecaster is GRU-only; Holt-Winters serves solely as a disagreement sensor."
+  ]
+}

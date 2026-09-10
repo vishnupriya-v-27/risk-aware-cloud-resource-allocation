@@ -1,0 +1,33 @@
+# Python virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# Byte-compiled / optimized / cache files
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS and IDE files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment variables & credentials
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# Temporary logs & raw partitioned task trace dumps
+*.log
+data/google/filtered_parts/
+uncertainty/selector_log.csv

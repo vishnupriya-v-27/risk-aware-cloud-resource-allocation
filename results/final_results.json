@@ -1,0 +1,466 @@
+{
+  "test_timesteps": 30300,
+  "num_machines": 100,
+  "delta_grace": 0.005,
+  "beta_star": 3.0,
+  "fixed_buffer_val_b3": 0.16591728772485895,
+  "val_mean_u_cal": 0.05530576257495298,
+  "val_mean_u_raw": 0.08519683206748184,
+  "configurations": [
+    {
+      "Config": "B0",
+      "Name": "Naive (Persistence)",
+      "Forecast_Model": "y[t-1]",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.06305436166384677,
+      "RMSE": 0.1080263759886258,
+      "SLA_Breach_Pct": 42.74917491749175,
+      "Overshoot_Pct": 53.07920792079208,
+      "Grace_Zone_Pct": 4.1551155115511555,
+      "Over_Provisioning": 0.032071325461865634,
+      "Under_Provisioning": 0.03098303620198115
+    },
+    {
+      "Config": "B0b",
+      "Name": "Seasonal Naive",
+      "Forecast_Model": "y[t-288] (24h)",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.1405331096347224,
+      "RMSE": 0.18820331595224643,
+      "SLA_Breach_Pct": 49.3927392739274,
+      "Overshoot_Pct": 49.115511551155116,
+      "Grace_Zone_Pct": 1.4917491749174918,
+      "Over_Provisioning": 0.06862547187727719,
+      "Under_Provisioning": 0.07190763775744521
+    },
+    {
+      "Config": "B1",
+      "Name": "Global GRU",
+      "Forecast_Model": "GRU (7 feat)",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.05698859460076378,
+      "RMSE": 0.09431942871530978,
+      "SLA_Breach_Pct": 39.86138613861387,
+      "Overshoot_Pct": 56.44554455445544,
+      "Grace_Zone_Pct": 3.693069306930693,
+      "Over_Provisioning": 0.033089330381548016,
+      "Under_Provisioning": 0.023899264219215767
+    },
+    {
+      "Config": "B2",
+      "Name": "Holt-Winters",
+      "Forecast_Model": "HW (Tuned m)",
+      "Buffer_Type": "Zero Buffer",
+      "MAE": 0.1619112812275405,
+      "RMSE": 0.21071111977020546,
+      "SLA_Breach_Pct": 49.227722772277225,
+      "Overshoot_Pct": 49.67656765676568,
+      "Grace_Zone_Pct": 1.0825082508250825,
+      "Over_Provisioning": 0.08529070449891592,
+      "Under_Provisioning": 0.07662057672862456
+    },
+    {
+      "Config": "B3",
+      "Name": "GRU + Fixed Mean Buffer",
+      "Forecast_Model": "GRU-based",
+      "Buffer_Type": "Fixed Scalar (0.1659)",
+      "MAE": 0.05698859460076378,
+      "RMSE": 0.09431942871530978,
+      "SLA_Breach_Pct": 2.6765676567656764,
+      "Overshoot_Pct": 97.24422442244224,
+      "Grace_Zone_Pct": 0.07920792079207921,
+      "Over_Provisioning": 0.1778499678145131,
+      "Under_Provisioning": 0.0027428263490752672
+    },
+    {
+      "Config": "B4a",
+      "Name": "GRU + U1 Calibrated (Disagreement)",
+      "Forecast_Model": "GRU + HW Sensor",
+      "Buffer_Type": "beta* U1_cal (beta=3.00)",
+      "MAE": 0.05698859460076378,
+      "RMSE": 0.09431942871530978,
+      "SLA_Breach_Pct": 6.844884488448845,
+      "Overshoot_Pct": 92.40594059405942,
+      "Grace_Zone_Pct": 0.7161716171617162,
+      "Over_Provisioning": 0.19813597979501807,
+      "Under_Provisioning": 0.004848560278937212
+    },
+    {
+      "Config": "B4b",
+      "Name": "GRU + U2 Calibrated (Error EWMA)",
+      "Forecast_Model": "GRU-based",
+      "Buffer_Type": "beta* U2_cal (beta=3.00)",
+      "MAE": 0.05698859460076378,
+      "RMSE": 0.09431942871530978,
+      "SLA_Breach_Pct": 2.7722772277227725,
+      "Overshoot_Pct": 96.94389438943894,
+      "Grace_Zone_Pct": 0.25082508250825086,
+      "Over_Provisioning": 0.17672914761228709,
+      "Under_Provisioning": 0.003050494879967748
+    },
+    {
+      "Config": "B4c",
+      "Name": "GRU + U3 Calibrated (Volatility)",
+      "Forecast_Model": "GRU-based",
+      "Buffer_Type": "beta* U3_cal (beta=3.00)",
+      "MAE": 0.05698859460076378,
+      "RMSE": 0.09431942871530978,
+      "SLA_Breach_Pct": 4.201320132013201,
+      "Overshoot_Pct": 95.29372937293729,
+      "Grace_Zone_Pct": 0.4686468646864687,
+      "Over_Provisioning": 0.17324177142519995,
+      "Under_Provisioning": 0.0038300581314923334
+    },
+    {
+      "Config": "P",
+      "Name": "Proposed Adaptive Calibrated",
+      "Forecast_Model": "GRU-based (Adaptive)",
+      "Buffer_Type": "beta* U*_cal (N*=75, beta=3.00)",
+      "MAE": 0.05698859460076378,
+      "RMSE": 0.09431942871530978,
+      "SLA_Breach_Pct": 5.201320132013201,
+      "Overshoot_Pct": 94.25742574257426,
+      "Grace_Zone_Pct": 0.49834983498349833,
+      "Over_Provisioning": 0.17962586066463793,
+      "Under_Provisioning": 0.00428064716890286
+    }
+  ],
+  "pareto_summary": [
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 0.5,
+      "SLA_Breach_Pct": 22.686468646864686,
+      "Waste": 0.051372436330265316,
+      "Deficit": 0.01452948888045658
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 0.5,
+      "SLA_Breach_Pct": 23.603960396039604,
+      "Waste": 0.055696523104528495,
+      "Deficit": 0.014629618377366288
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 0.5,
+      "SLA_Breach_Pct": 23.66336633663366,
+      "Waste": 0.05161063180225894,
+      "Deficit": 0.01441176936519759
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 0.5,
+      "SLA_Breach_Pct": 24.55115511551155,
+      "Waste": 0.05187405457426263,
+      "Deficit": 0.014862007541449685
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 0.5,
+      "SLA_Breach_Pct": 24.141914191419144,
+      "Waste": 0.052794633828440414,
+      "Deficit": 0.014718777663969656
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 0.5,
+      "SLA_Breach_Pct": 18.95049504950495,
+      "Waste": 0.06995303592063251,
+      "Deficit": 0.012021177974357065
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 0.75,
+      "SLA_Breach_Pct": 16.861386138613863,
+      "Waste": 0.06217890495933708,
+      "Deficit": 0.011509516865790104
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 0.75,
+      "SLA_Breach_Pct": 18.933993399339936,
+      "Waste": 0.06919464142298824,
+      "Deficit": 0.012200170250878948
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 0.75,
+      "SLA_Breach_Pct": 17.735973597359735,
+      "Waste": 0.06262566539795814,
+      "Deficit": 0.011430470805798655
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 0.75,
+      "SLA_Breach_Pct": 19.633663366336634,
+      "Waste": 0.0631033399432396,
+      "Deficit": 0.012185541399193603
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 0.75,
+      "SLA_Breach_Pct": 19.092409240924095,
+      "Waste": 0.06461062046029253,
+      "Deficit": 0.012106360628523202
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 0.75,
+      "SLA_Breach_Pct": 14.277227722772276,
+      "Waste": 0.09133074191879427,
+      "Deficit": 0.009480777687522469
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 1.0,
+      "SLA_Breach_Pct": 12.3993399339934,
+      "Waste": 0.07376228923371289,
+      "Deficit": 0.009266460496427664
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 1.0,
+      "SLA_Breach_Pct": 15.798679867986799,
+      "Waste": 0.08334459457713332,
+      "Deficit": 0.010478373076068439
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 1.0,
+      "SLA_Breach_Pct": 13.501650165016502,
+      "Waste": 0.07444592339440412,
+      "Deficit": 0.00927406241322865
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 1.0,
+      "SLA_Breach_Pct": 15.65016501650165,
+      "Waste": 0.07496796201854908,
+      "Deficit": 0.010199207485687194
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 1.0,
+      "SLA_Breach_Pct": 15.42904290429043,
+      "Waste": 0.07710562590512357,
+      "Deficit": 0.010228505317393988
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 1.0,
+      "SLA_Breach_Pct": 11.194719471947195,
+      "Waste": 0.11291387307541945,
+      "Deficit": 0.007758507034675299
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 1.25,
+      "SLA_Breach_Pct": 9.198019801980198,
+      "Waste": 0.08593925171650668,
+      "Deficit": 0.0076169823354832
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 1.25,
+      "SLA_Breach_Pct": 13.485148514851486,
+      "Waste": 0.09780376347062118,
+      "Deficit": 0.009182356216410443
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 1.25,
+      "SLA_Breach_Pct": 10.224422442244224,
+      "Waste": 0.08679071438387834,
+      "Deficit": 0.007686188945406666
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 1.25,
+      "SLA_Breach_Pct": 12.706270627062707,
+      "Waste": 0.08722443005249685,
+      "Deficit": 0.00869129028178739
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 1.25,
+      "SLA_Breach_Pct": 12.716171617161717,
+      "Waste": 0.08995317925614857,
+      "Deficit": 0.008810694734766937
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 1.25,
+      "SLA_Breach_Pct": 8.957095709570957,
+      "Waste": 0.13419730540931746,
+      "Deficit": 0.006499065378221392
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 1.5,
+      "SLA_Breach_Pct": 7.0528052805280534,
+      "Waste": 0.09853771446013289,
+      "Deficit": 0.006389004435371177
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 1.5,
+      "SLA_Breach_Pct": 11.87128712871287,
+      "Waste": 0.11240003264320862,
+      "Deficit": 0.008177251366029554
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 1.5,
+      "SLA_Breach_Pct": 8.003300330033003,
+      "Waste": 0.09946717101926528,
+      "Deficit": 0.00650757159649625
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 1.5,
+      "SLA_Breach_Pct": 10.561056105610561,
+      "Waste": 0.09968933713359208,
+      "Deficit": 0.007515013978141041
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 1.5,
+      "SLA_Breach_Pct": 10.801980198019802,
+      "Waste": 0.10297224037338105,
+      "Deficit": 0.00771364829120242
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 1.5,
+      "SLA_Breach_Pct": 7.38943894389439,
+      "Waste": 0.15479830647410864,
+      "Deficit": 0.005538515994273042
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 2.0,
+      "SLA_Breach_Pct": 4.462046204620462,
+      "Waste": 0.12450678608375826,
+      "Deficit": 0.004705194771520031
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 2.0,
+      "SLA_Breach_Pct": 9.6996699669967,
+      "Waste": 0.14152821256519435,
+      "Deficit": 0.006691189214480368
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 2.0,
+      "SLA_Breach_Pct": 5.264026402640265,
+      "Waste": 0.1252563894817407,
+      "Deficit": 0.004882903746429883
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 2.0,
+      "SLA_Breach_Pct": 7.435643564356435,
+      "Waste": 0.1247456518257459,
+      "Deficit": 0.0058071413800813345
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 2.0,
+      "SLA_Breach_Pct": 8.026402640264028,
+      "Waste": 0.12905863892738767,
+      "Deficit": 0.006133864387487967
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 2.0,
+      "SLA_Breach_Pct": 5.145214521452146,
+      "Waste": 0.19311299121033246,
+      "Deficit": 0.0041996349019984315
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 2.5,
+      "SLA_Breach_Pct": 3.3036303630363038,
+      "Waste": 0.15104618462040126,
+      "Deficit": 0.0035917120206865718
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 2.5,
+      "SLA_Breach_Pct": 7.957095709570957,
+      "Waste": 0.17025199459987897,
+      "Deficit": 0.005625144932430832
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 2.5,
+      "SLA_Breach_Pct": 3.6699669966996704,
+      "Waste": 0.1511441892972524,
+      "Deficit": 0.003807937893736575
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 2.5,
+      "SLA_Breach_Pct": 5.425742574257426,
+      "Waste": 0.14941873314719145,
+      "Deficit": 0.004649109334433515
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 2.5,
+      "SLA_Breach_Pct": 6.326732673267327,
+      "Waste": 0.1547565502487745,
+      "Deficit": 0.005058180963206723
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 2.5,
+      "SLA_Breach_Pct": 3.9075907590759074,
+      "Waste": 0.22719095262811326,
+      "Deficit": 0.0033424383263913823
+    },
+    {
+      "Strategy": "B3 (Fixed Mean Cal)",
+      "beta": 3.0,
+      "SLA_Breach_Pct": 2.6765676567656764,
+      "Waste": 0.1778499678145131,
+      "Deficit": 0.0027428263490752672
+    },
+    {
+      "Strategy": "B4a (U1 Calibrated)",
+      "beta": 3.0,
+      "SLA_Breach_Pct": 6.844884488448845,
+      "Waste": 0.19813597979501807,
+      "Deficit": 0.004848560278937212
+    },
+    {
+      "Strategy": "B4b (U2 Calibrated)",
+      "beta": 3.0,
+      "SLA_Breach_Pct": 2.7722772277227725,
+      "Waste": 0.17672914761228709,
+      "Deficit": 0.003050494879967748
+    },
+    {
+      "Strategy": "B4c (U3 Calibrated)",
+      "beta": 3.0,
+      "SLA_Breach_Pct": 4.201320132013201,
+      "Waste": 0.17324177142519995,
+      "Deficit": 0.0038300581314923334
+    },
+    {
+      "Strategy": "P (Proposed Calibrated U*)",
+      "beta": 3.0,
+      "SLA_Breach_Pct": 5.201320132013201,
+      "Waste": 0.17962586066463793,
+      "Deficit": 0.00428064716890286
+    },
+    {
+      "Strategy": "P_raw (Uncalibrated U*)",
+      "beta": 3.0,
+      "SLA_Breach_Pct": 3.1056105610561056,
+      "Waste": 0.2575090621223194,
+      "Deficit": 0.002746974073726301
+    }
+  ]
+}

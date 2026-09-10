@@ -1,0 +1,94 @@
+{
+  "selected_beta": 3.0,
+  "delta_grace": 0.005,
+  "target_sla_breach": 0.02,
+  "validation_grid_search": {
+    "0.5": {
+      "sla_breach_rate": 0.250957095709571,
+      "overshoot_rate": 0.7211881188118812,
+      "grace_zone_rate": 0.027854785478547854,
+      "over_provisioning": 0.049568903243326634,
+      "under_provisioning": 0.015035842266050212,
+      "beta": 0.5
+    },
+    "0.75": {
+      "sla_breach_rate": 0.19811881188118813,
+      "overshoot_rate": 0.7763036303630363,
+      "grace_zone_rate": 0.02557755775577558,
+      "over_provisioning": 0.06042676549052683,
+      "under_provisioning": 0.012419779778811302,
+      "beta": 0.75
+    },
+    "1.0": {
+      "sla_breach_rate": 0.162013201320132,
+      "overshoot_rate": 0.8183498349834983,
+      "grace_zone_rate": 0.019636963696369636,
+      "over_provisioning": 0.07199629172385369,
+      "under_provisioning": 0.010529985371703951,
+      "beta": 1.0
+    },
+    "1.25": {
+      "sla_breach_rate": 0.13415841584158417,
+      "overshoot_rate": 0.8486468646864687,
+      "grace_zone_rate": 0.017161716171617162,
+      "over_provisioning": 0.08397592795228086,
+      "under_provisioning": 0.009103162646210056,
+      "beta": 1.25
+    },
+    "1.5": {
+      "sla_breach_rate": 0.11465346534653466,
+      "overshoot_rate": 0.8713201320132014,
+      "grace_zone_rate": 0.01396039603960396,
+      "over_provisioning": 0.09618356905268587,
+      "under_provisioning": 0.007996404558750113,
+      "beta": 1.5
+    },
+    "2.0": {
+      "sla_breach_rate": 0.0859075907590759,
+      "overshoot_rate": 0.9033003300330033,
+      "grace_zone_rate": 0.010693069306930694,
+      "over_provisioning": 0.12078441277146215,
+      "under_provisioning": 0.006391087969556992,
+      "beta": 2.0
+    },
+    "2.5": {
+      "sla_breach_rate": 0.06785478547854785,
+      "overshoot_rate": 0.9245214521452145,
+      "grace_zone_rate": 0.007425742574257425,
+      "over_provisioning": 0.14519280709525487,
+      "under_provisioning": 0.005294377479163956,
+      "beta": 2.5
+    },
+    "3.0": {
+      "sla_breach_rate": 0.056204620462046204,
+      "overshoot_rate": 0.9382178217821782,
+      "grace_zone_rate": 0.00537953795379538,
+      "over_provisioning": 0.16900573206251623,
+      "under_provisioning": 0.004500646573798694,
+      "beta": 3.0
+    }
+  },
+  "split_performance": {
+    "train": {
+      "sla_breach_rate": 0.12690509915014164,
+      "overshoot_rate": 0.8593626062322947,
+      "grace_zone_rate": 0.01353399433427762,
+      "over_provisioning": 0.11361905799799522,
+      "under_provisioning": 0.008279876827698915
+    },
+    "val": {
+      "sla_breach_rate": 0.056204620462046204,
+      "overshoot_rate": 0.9382178217821782,
+      "grace_zone_rate": 0.00537953795379538,
+      "over_provisioning": 0.16900573206251623,
+      "under_provisioning": 0.004500646573798694
+    },
+    "test": {
+      "sla_breach_rate": 0.05201320132013201,
+      "overshoot_rate": 0.9425742574257425,
+      "grace_zone_rate": 0.004983498349834983,
+      "over_provisioning": 0.17962586066463793,
+      "under_provisioning": 0.00428064716890286
+    }
+  }
+}

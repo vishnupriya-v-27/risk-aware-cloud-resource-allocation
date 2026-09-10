@@ -1,0 +1,66 @@
+{
+  "Test 1 (Dataset Integrity)": {
+    "result": "PASS",
+    "evidence": "100 locked machines, exactly 2,018 bins/machine (201,800 rows), 0 duplicates, CPU in [0.0000, 1.0000]."
+  },
+  "Test 2 (Split & Feature Boundary Integrity)": {
+    "result": "PASS",
+    "evidence": "Per machine: 1,412 Train (t=0..1411), 303 Val (t=1412..1714), 303 Test (t=1715..2017). Zero chronological overlap. Lags & rolling features strictly causal."
+  },
+  "Test 3 (Forecasting Leakage)": {
+    "result": "PASS",
+    "evidence": "Naive strictly y[t-1]; SNaive strictly y[t-288]; HW m selected on validation only; GRU trained with early stopping on validation split only. Zero test target influence."
+  },
+  "Test 4 (Fusion Integrity)": {
+    "result": "PASS",
+    "evidence": "Validation grid selected alpha*=0.00; max |fused_pred - gru_pred| = 0.0e+00 (Identical to GRU). No test metrics used."
+  },
+  "Test 5 (Uncertainty Signal Causality)": {
+    "result": "PASS",
+    "evidence": "U1 strictly |HW - GRU|; U2 EWMA causal with test[0] initialized to last Val error across all 100 machines; U3 strictly std(y[t-6:t-1]). Zero current/future actual used."
+  },
+  "Test 6 (Calibration Leakage)": {
+    "result": "PASS",
+    "evidence": "c1=0.428489, c2=1.002459, c3=0.775146 derived exclusively from 30,300 validation steps. Zero test observations used."
+  },
+  "Test 7 (Selector Invariance)": {
+    "result": "PASS",
+    "evidence": "N*=75 confirmed. Test distribution: U1=41.68%, U2=23.23%, U3=35.09%. Zero differing decisions (0/201800)."
+  },
+  "Test 8 (Selector Causality)": {
+    "result": "PASS",
+    "evidence": "Rolling Spearman uses strictly historical errors E[t-N:t-1] and U[t-N:t-1]. Current error E[t] and actual y[t] are never included."
+  },
+  "Test 9 (Beta Selection Leakage)": {
+    "result": "PASS",
+    "evidence": "beta* = 3.00 selected from validation grid [0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0] as lowest validation breach (5.62%). Zero test tuning."
+  },
+  "Test 10 (Allocation Sanity)": {
+    "result": "PASS",
+    "evidence": "All 201,800 allocations strictly in [0.0000, 1.0000], 0 NaN/Inf, allocation matches clip(pred + beta*U_cal, 0, 1) 100%."
+  },
+  "Test 11 (Test Isolation)": {
+    "result": "PASS",
+    "evidence": "Test set (30,300 timesteps) is used exclusively for final evaluation metric computation and plotting. No feedback loop into training, hyperparameters, alpha, c_k, N*, or beta."
+  },
+  "Test 12 (Baseline Sanity)": {
+    "result": "PASS",
+    "evidence": "Naive (MAE=0.0631, RMSE=0.1080), GRU (MAE=0.0570, RMSE=0.0943), HW (MAE=0.1619, RMSE=0.2107). GRU outperforms Naive & HW."
+  },
+  "Test 13 (Calibrated Results Sanity)": {
+    "result": "PASS",
+    "evidence": "All 9 benchmark configurations exactly match expected metrics in final_results.csv and final_results.json."
+  },
+  "Test 14 (Pareto Result Integrity)": {
+    "result": "PASS",
+    "evidence": "Verified: B4b (U2 Calibrated) has lower SLA breach AND lower waste than Proposed P across all 8 tested beta values."
+  },
+  "Test 15 (Reproducibility)": {
+    "result": "PASS",
+    "evidence": "All pipelines use deterministic tie-breaking, fixed seed 42, deterministic array sorting, and produce bitwise reproducible results."
+  },
+  "Test 16 (Code & Artifact Consistency)": {
+    "result": "PASS",
+    "evidence": "All scripts (uncertainty.py, selector.py, allocation.py, evaluate.py) and output artifacts consistently reference calibrated signals, beta*=3.00, and N*=75."
+  }
+}
